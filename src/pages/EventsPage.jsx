@@ -1,30 +1,37 @@
 import React from "react";
-import { Heading } from "@chakra-ui/react";
-import { useLoaderData } from "react-router-dom";
+import { Heading, Box, Text, Image, Button } from "@chakra-ui/react";
+import { useLoaderData, Link } from "react-router-dom";
 
 export const loader = async () => {
   const events = await fetch("http://localhost:3000/events");
-  const catagories = await fetch("http://localhost:3000/catagories");
+  const categories = await fetch("http://localhost:3000/categories");
 
-  return { events: await events.json(), catagories: await catagories.json() };
+  return { events: await events.json(), categories: await categories.json() };
 };
 
 export const EventsPage = () => {
-  const { events, catagories } = useLoaderData();
+  const { events, categories } = useLoaderData();
 
   return (
     <>
       <Heading>List of events</Heading>;
       {events.map((event) => {
-        <ul>
-          <h1>event.title</h1>
-          <li>event.description</li>
-          <img>event.image</img>
-          <li>event.startTime</li>
-          <li>event.endTime</li>
-          <li>event.categoryIds</li>
-        </ul>;
+        <Box key={event.id}>
+          <Link to={"/event/:eventId"}>
+            <Text>event.title</Text>
+            <Text>event.description</Text>
+            <Image src={event.image} alt={event.title}></Image>
+            <Text>
+              Start time event: {new Date(event.startTime).toLocaleString()}
+            </Text>
+            <Text>
+              End time event: {new Date(event.endTime).toLocaleString()}
+            </Text>
+            <Text>event.categoryIds</Text>
+          </Link>
+        </Box>;
       })}
+      <Button>Add event</Button>
     </>
   );
 };
