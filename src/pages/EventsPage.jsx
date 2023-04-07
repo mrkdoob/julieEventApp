@@ -10,26 +10,28 @@ export const loader = async () => {
 };
 
 export const EventsPage = () => {
-  const { events, categories } = useLoaderData();
+  const { events } = useLoaderData();
 
   return (
     <>
       <Heading>List of events</Heading>;
       {events.map((event) => {
-        <Box key={event.id}>
-          <Link to={"/event/:eventId"}>
-            <Text>event.title</Text>
-            <Text>event.description</Text>
-            <Image src={event.image} alt={event.title}></Image>
-            <Text>
-              Start time event: {new Date(event.startTime).toLocaleString()}
-            </Text>
-            <Text>
-              End time event: {new Date(event.endTime).toLocaleString()}
-            </Text>
-            <Text>event.categoryIds</Text>
-          </Link>
-        </Box>;
+        return (
+          <Box key={event.id}>
+            <Link to={`events/${event.id}`}>
+              <Text>{event.title}</Text>
+              <Text>{event.description}</Text>
+              <Image src={event.image} alt={event.title}></Image>
+              <Text>
+                Start time event: {new Date(event.startTime).toLocaleString()}
+              </Text>
+              <Text>
+                End time event: {new Date(event.endTime).toLocaleString()}
+              </Text>
+              <Text>{event.categoryIds}</Text>
+            </Link>
+          </Box>
+        );
       })}
       <Button>Add event</Button>
     </>
