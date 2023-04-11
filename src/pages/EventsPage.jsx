@@ -10,7 +10,7 @@ export const loader = async () => {
 };
 
 export const EventsPage = () => {
-  const { events } = useLoaderData();
+  const { events, categories } = useLoaderData();
 
   return (
     <>
@@ -18,7 +18,7 @@ export const EventsPage = () => {
       {events.map((event) => {
         return (
           <Box key={event.id}>
-            <Link to={`events/${event.id}`}>
+            <Link to={`event/${event.id}`}>
               <Text>{event.title}</Text>
               <Text>{event.description}</Text>
               <Image src={event.image} alt={event.title}></Image>
@@ -28,7 +28,11 @@ export const EventsPage = () => {
               <Text>
                 End time event: {new Date(event.endTime).toLocaleString()}
               </Text>
-              <Text>{event.categoryIds}</Text>
+              {categories.map((category) =>
+                event.categoryIds.includes(category.id) ? (
+                  <Text key={categories.id}>{category.name}</Text>
+                ) : null
+              )}
             </Link>
           </Box>
         );
