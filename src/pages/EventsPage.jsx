@@ -30,14 +30,16 @@ export const EventsPage = () => {
               </Text>
               {categories.map((category) =>
                 event.categoryIds.includes(category.id) ? (
-                  <Text key={categories.id}>{category.name}</Text>
+                  <Text key={category.id}>{category.name}</Text>
                 ) : null
               )}
             </Link>
           </Box>
         );
       })}
-      <Button>Add event</Button>
+      <Button>
+        <Link to={"event/new"}>Add event</Link>
+      </Button>
     </>
   );
 };

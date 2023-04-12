@@ -10,16 +10,10 @@ export const loader = async ({ params }) => {
     users: await users.json(),
   };
 };
-console.log(users);
-
-// // const userId = users.map((user) => {
-// //   return user.id;
-// // });
-// // console.log(userId);
-// // const user = users.filter((user) => userId.includes(event.createdBy));
 
 export const EventPage = () => {
   const { event, users } = useLoaderData();
+
   return (
     <>
       <Heading>Event</Heading>
@@ -31,9 +25,18 @@ export const EventPage = () => {
           Start time event: {new Date(event.startTime).toLocaleString()}
         </Text>
         <Text>End time event: {new Date(event.endTime).toLocaleString()}</Text>
-        <Text>{event.categoryIds}</Text>
-        {/* <Text>Created by: {user.name}</Text> */}
+        <Text>Created by:</Text>{" "}
       </Box>
+      {users.map((user) =>
+        user.id === event.createdBy ? (
+          <>
+            <Box key={event.title}>
+              <Text>{user.name}</Text>
+              <Image src={user.image}></Image>
+            </Box>
+          </>
+        ) : null
+      )}
     </>
   );
 };

@@ -15,3 +15,13 @@ export const Navigation = () => {
     </nav>
   );
 };
+
+// category selector
+// <label>
+// <span>User</span>
+// <select name="userId">
+//   {users.map((user) => (
+//     <option value={user.id}>{user.name}</option>
+//   ))}
+// </select>
+// </label>
