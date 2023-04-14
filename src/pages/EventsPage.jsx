@@ -29,7 +29,7 @@ export const EventsPage = () => {
                 End time event: {new Date(event.endTime).toLocaleString()}
               </Text>
               {categories.map((category) =>
-                event.categoryIds.includes(category.id) ? (
+                event.categoryIds?.includes(category.id) ? (
                   <Text key={category.id}>{category.name}</Text>
                 ) : null
               )}

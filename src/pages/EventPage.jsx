@@ -17,7 +17,7 @@ export const EventPage = () => {
   return (
     <>
       <Heading>Event</Heading>
-      <Box key={event.id}>
+      <Box>
         <Text>{event.title}</Text>
         <Text>{event.description}</Text>
         <Image src={event.image} alt={event.title}></Image>
@@ -29,12 +29,10 @@ export const EventPage = () => {
       </Box>
       {users.map((user) =>
         user.id === event.createdBy ? (
-          <>
-            <Box key={event.title}>
-              <Text>{user.name}</Text>
-              <Image src={user.image}></Image>
-            </Box>
-          </>
+          <Box key={user.id}>
+            <Text>{user.name}</Text>
+            <Image src={user.image}></Image>
+          </Box>
         ) : null
       )}
     </>
