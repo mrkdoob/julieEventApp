@@ -10,6 +10,10 @@ import {
 } from "./pages/NewEvent";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Root } from "./components/Root";
+import {
+  Searchbar,
+  loader as choosenEventLoader,
+} from "./components/Searchbar";
 
 const router = createBrowserRouter([
   {
@@ -33,12 +37,11 @@ const router = createBrowserRouter([
         loader: categoryLoader,
         action: createEvent,
       },
-      // {
-      //   path: "/post/new",
-      //   element: <NewPost />,
-      //   action: createPost,
-      //   loader: newPostLoader,
-      // },
+      {
+        path: "events?q=${eventChoice}",
+        element: <Searchbar />,
+        loader: choosenEventLoader,
+      },
     ],
   },
 ]);

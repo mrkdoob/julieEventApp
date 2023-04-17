@@ -12,16 +12,7 @@ export const Navigation = () => {
           <Link to="/event/1">Event</Link>
         </li>
       </ul>
+      <></>
     </nav>
   );
 };
-
-// category selector
-// <label>
-// <span>User</span>
-// <select name="userId">
-//   {users.map((user) => (
-//     <option value={user.id}>{user.name}</option>
-//   ))}
-// </select>
-// </label>

@@ -1,6 +1,8 @@
 import React from "react";
 import { Heading, Box, Text, Image, Button } from "@chakra-ui/react";
 import { useLoaderData, Link } from "react-router-dom";
+import { Searchbar } from "../components/Searchbar";
+// import { Categorypicker } from "../components/Categorypicker";
 
 export const loader = async () => {
   const events = await fetch("http://localhost:3000/events");
@@ -14,6 +16,8 @@ export const EventsPage = () => {
 
   return (
     <>
+      <Searchbar events={events} />
+      {/* <Categorypicker categories={categories} /> */}
       <Heading>List of events</Heading>;
       {events.map((event) => {
         return (
