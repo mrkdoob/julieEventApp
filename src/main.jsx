@@ -10,10 +10,10 @@ import {
 } from "./pages/NewEvent";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Root } from "./components/Root";
-import {
-  Searchbar,
-  loader as choosenEventLoader,
-} from "./components/Searchbar";
+// import {
+//   Searchbar,
+//   loader as choosenEventLoader,
+// } from "./components/Searchbar";
 
 const router = createBrowserRouter([
   {
@@ -37,11 +37,11 @@ const router = createBrowserRouter([
         loader: categoryLoader,
         action: createEvent,
       },
-      {
-        path: "events?q=${eventChoice}",
-        element: <Searchbar />,
-        loader: choosenEventLoader,
-      },
+      // {
+      //   path: "events?q=${eventChoice}",
+      //   element: <Searchbar />,
+      //   loader: choosenEventLoader,
+      // },
     ],
   },
 ]);

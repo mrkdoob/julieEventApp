@@ -1,40 +1,23 @@
 import { Input } from "@chakra-ui/react";
-// import { useLoaderData } from "react-router-dom";
-// import { useState } from "react";
+import { redirect } from "react-router-dom";
 
-export const loader = async (eventChoice) => {
-  const choosenEvent = await fetch(
-    `http://localhost:3000/events?q=${eventChoice}`
-  );
-
-  return {
-    event: await choosenEvent.json(),
+export const Searchbar = (setEventChoice) => {
+  const loader = async (eventChoice) => {
+    const choosenEvent = await fetch(
+      `http://localhost:3000/events?q=${eventChoice}`
+    )
+      .then((res) => res.json())
+      .then((json) => json.id);
+    return redirect(`/event/${choosenEvent}`);
   };
-};
-
-export const Searchbar = () => {
-  //   const { events } = useLoaderData();
-
-  //   const [eventChoice, setEventChoice] = useState("");
 
   const handleEventChoice = (e) => {
     const eventChoice = e.target.value;
     console.log(eventChoice);
-    loader(eventChoice);
+    loader(eventChoice).then(({ event }) => {
+      setEventChoice(event);
+    });
   };
-
-  //   const choosenEvent = events.filter((event) => {
-  //     if (eventChoice) {
-  //       return (
-  //         event === eventChoice &&
-  //         (event.title.toLowerCase().includes(eventChoice.toLowerCase()) ||
-  //           event.description.toLowerCase().includes(eventChoice.toLowerCase()))
-  //       );
-  //     }
-  //   });
-
-  //   loader(choosenEvent);
-
   return (
     <Input
       onChange={handleEventChoice}
