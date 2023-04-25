@@ -1,44 +1,50 @@
-// import { Select } from "@chakra-ui/react";
-// import { Formik } from "formik";
-// // import { useLoaderData } from "react-router-dom";
-// import { useState } from "react";
+import { Select } from "@chakra-ui/react";
+import { Formik } from "formik";
 
-// export const loader = async ({ params }) => {
-//   const category = await fetch(
-//     `http://localhost:3000/categories/${params.categoryChoice}`
-//   );
+export const Categorypicker = ({ setEventChoice, categories }) => {
+  const fetchCatergoryQuery = async (categoryId) => {
+    // const eventsCategories = events.categoryIds;
+    // console.log(eventsCategories);
+    // const choosenCategory = eventsCategories.map((eventCategory) => {
+    //   return eventCategory == { categoryId };
+    // });
+    // console.log(choosenCategory);
 
-//   return {
-//     category: await category.json(),
-//   };
-// };
+    // &categoryIds_like=${selectedCategory.id}
 
-// export const Categorypicker = () => {
-//   //   const { category } = useLoaderData();
+    const categoryEvents = await fetch(
+      `http://localhost:3000/events?&categoryIds_like=${categoryId}`
+    );
+    return {
+      event: await categoryEvents.json(),
+    };
+  };
 
-//   const [categoryChoice, setCategoryChoice] = useState('');
+  const handleCategoryChoice = (e) => {
+    const categoryId = e.target.value;
+    fetchCatergoryQuery(categoryId).then(({ event }) => {
+      setEventChoice(event);
+    });
+  };
 
-//   loader(categoryChoice);
-
-//   const handleCategoryChoice = (event) => {
-//     setCategoryChoice(event.target.value);
-//     console.log(categoryChoice);
-//   };
-
-//   return (
-//     <Formik>
-//       <Select
-//         name="categoryIds"
-//         onChange={handleCategoryChoice}
-//         // value={categoryChoice}
-//         placeholder="Search by category"
-//       >
-//         {categories.map((category) => (
-//           <option key={category.id} value={category.id}>
-//             {category.name}
-//           </option>
-//         ))}
-//       </Select>
-//     </Formik>
-//   );
-// };
+  return (
+    <Formik>
+      <Select
+        fontWeight={"450"}
+        color="black"
+        width={250}
+        mb={20}
+        bg="white"
+        name="categoryIds"
+        onChange={handleCategoryChoice}
+        placeholder="Search by catergory"
+      >
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </Select>
+    </Formik>
+  );
+};
