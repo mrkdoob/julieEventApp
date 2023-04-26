@@ -3,15 +3,6 @@ import { Formik } from "formik";
 
 export const Categorypicker = ({ setEventChoice, categories }) => {
   const fetchCatergoryQuery = async (categoryId) => {
-    // const eventsCategories = events.categoryIds;
-    // console.log(eventsCategories);
-    // const choosenCategory = eventsCategories.map((eventCategory) => {
-    //   return eventCategory == { categoryId };
-    // });
-    // console.log(choosenCategory);
-
-    // &categoryIds_like=${selectedCategory.id}
-
     const categoryEvents = await fetch(
       `http://localhost:3000/events?&categoryIds_like=${categoryId}`
     );
@@ -19,6 +10,8 @@ export const Categorypicker = ({ setEventChoice, categories }) => {
       event: await categoryEvents.json(),
     };
   };
+
+  console.log(categories);
 
   const handleCategoryChoice = (e) => {
     const categoryId = e.target.value;

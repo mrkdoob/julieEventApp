@@ -1,5 +1,7 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link, redirect } from "react-router-dom";
+import { EditEvent } from "../components/EditEvent";
+import background from "../images/background.jpeg";
 import {
   Box,
   Text,
@@ -9,10 +11,6 @@ import {
   Center,
   Flex,
 } from "@chakra-ui/react";
-import { redirect } from "react-router-dom";
-import { EditEvent } from "../components/EditEvent";
-import { Link } from "react-router-dom";
-// import { useRouteLoaderData } from "react-router-dom";
 
 export const loader = async ({ params }) => {
   const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
@@ -46,13 +44,6 @@ export const EventPage = () => {
       position: "top-right",
       isClosable: true,
     });
-    toast({
-      title: "Event not deleted.",
-      status: "error",
-      duration: 5000,
-      position: "top-right",
-      isClosable: true,
-    });
   };
 
   return (
@@ -60,7 +51,7 @@ export const EventPage = () => {
       <Box bg="black" color="yellow.300">
         <Center>
           <Box
-            backgroundImage="url('/images/eventbackground.jpeg')"
+            backgroundImage={background}
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
             borderWidth="3px"

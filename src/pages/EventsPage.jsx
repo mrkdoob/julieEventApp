@@ -1,13 +1,11 @@
 import React from "react";
-import { Box, Text, Button, Center, Flex } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { Searchbar } from "../components/Searchbar";
 import { useState } from "react";
+import { Link, useLoaderData } from "react-router-dom";
+import { Searchbar } from "../components/Searchbar";
 import { Categorypicker } from "../components/Categorypicker";
-// import { useRouteLoaderData } from "react-router-dom";
-import { useLoaderData } from "react-router-dom";
+import { FilterEvents } from "../components/filterEvents";
+import { Box, Text, Button, Center, Flex } from "@chakra-ui/react";
 
-// DIT KAN WEG ALS HET GOED IS als react router dom werkt
 export const loader = async () => {
   const events = await fetch(`http://localhost:3000/events`);
   const categories = await fetch("http://localhost:3000/categories");
@@ -33,6 +31,11 @@ export const EventsPage = () => {
             categories={categories}
             setEventChoice={setEventChoice}
           />
+          <FilterEvents
+            events={events}
+            categories={categories}
+            setEventChoice={setEventChoice}
+          />
         </Flex>
         <Center>
           <Box className="eventList">
@@ -40,7 +43,7 @@ export const EventsPage = () => {
               <Box>
                 {eventChoice.map((event) => {
                   return (
-                    <Link key={event.name} to={`event/${event.id}`}>
+                    <Link key={event.id} to={`event/${event.id}`}>
                       <Center
                         key={event.name}
                         backgroundImage={event.image}

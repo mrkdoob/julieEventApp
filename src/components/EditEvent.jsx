@@ -1,4 +1,6 @@
 import { Formik } from "formik";
+import { redirect } from "react-router-dom";
+import { Calendar } from "primereact/calendar";
 import * as Yup from "yup";
 import {
   Modal,
@@ -21,71 +23,63 @@ import {
   Button,
   Box,
   Heading,
-  // Toast,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
-import { useToast } from "@chakra-ui/react";
-import { redirect } from "react-router-dom";
 
-// import { useRouteLoaderData } from "react-router-dom";
-
-export const EditEvent = (event) => {
-  //   const { categories, users } = useRouteLoaderData("root");
+export const EditEvent = ({ event, categories, users }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const eventEdit = event.event;
-  const eventCategories = event.categories;
-  const eventUsers = event.users;
-
-  const editEventFetch = async ({ values }, evenEditId) => {
+  const editEventFetch = async ({ values }, eventId) => {
     values.createdBy = parseInt(values.createdBy);
-    const editedEvent = await fetch(
-      `http://localhost:3000/events/${evenEditId}`,
-      {
-        method: "PUT",
-        body: JSON.stringify(values),
-        headers: { "Content-Type": "application/json" },
-      }
-    )
-      .then((res) => res.json())
-      .then((json) => json.id);
-    toast({
-      title: "Event edited succesfully.",
-      status: "success",
-      duration: 5000,
-      position: "top-right",
-      isClosable: true,
+    const editedEvent = await fetch(`http://localhost:3000/events/${eventId}`, {
+      method: "PUT",
+      body: JSON.stringify(values),
+      headers: { "Content-Type": "application/json" },
+    }).then((res) => {
+      if (res.ok)
+        toast({
+          title: "Event edited succesfully.",
+          status: "success",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        })
+          .then((res) => res.json())
+          .then((json) => json.id);
+      else
+        toast({
+          title: "Event not edited.",
+          status: "error",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
+
+      return redirect(`/event/${editedEvent}`);
     });
-    toast({
-      title: "Event not edited.",
-      status: "error",
-      duration: 5000,
-      position: "top-right",
-      isClosable: true,
-    });
-    redirect(`/event/${editedEvent}`);
   };
 
-  const onSubmit = (values, eventEditId, actions) => {
-    editEventFetch({ values }, eventEditId);
+  const onSubmit = (values, eventId, actions) => {
+    editEventFetch({ values }, eventId);
     actions.resetForm();
   };
 
   const initialValues = {
-    title: eventEdit.title,
-    description: eventEdit.description,
-    image: eventEdit.image,
-    startTime: eventEdit.startTime,
-    endTime: eventEdit.endTime,
-    location: eventEdit.location,
-    categoryIds: eventEdit.categoryIds,
-    createdBy: eventEdit.createdBy,
+    title: event.title,
+    description: event.description,
+    image: event.image,
+    startTime: new Date(event.startTime),
+    endTime: new Date(event.endTime),
+    location: event.location,
+    categoryIds: event.categoryIds,
+    createdBy: event.createdBy,
   };
 
   const validationSchema = Yup.object({
     title: Yup.string()
-      .min(6, "Event title is too short")
+      .min(4, "Event title is too short")
       .required("Event title is required"),
     description: Yup.string()
       .min(15, "Description is too short")
@@ -113,7 +107,7 @@ export const EditEvent = (event) => {
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={(values, actions) =>
-                onSubmit(values, eventEdit.id, actions)
+                onSubmit(values, event.id, actions)
               }
             >
               {(formik) => {
@@ -199,13 +193,14 @@ export const EditEvent = (event) => {
                             <FormLabel>Starttime</FormLabel>
                             <InputGroup borderColor="#E0E1E7">
                               <InputLeftElement pointerEvents="none"></InputLeftElement>
-                              <input
-                                type="datetime-local"
+                              <Calendar
                                 id="startTime"
+                                dateFormat="dd/mm/yy"
+                                showTime
+                                hourFormat="24"
                                 onChange={formik.handleChange}
                                 value={formik.values.startTime}
                                 onBlur={formik.handleBlur}
-                                placeholder={eventEdit.startTime}
                               />
                               <FormErrorMessage>
                                 {formik.errors.startTime}
@@ -221,13 +216,14 @@ export const EditEvent = (event) => {
                             <FormLabel>Endtime</FormLabel>
                             <InputGroup borderColor="#E0E1E7">
                               <InputLeftElement pointerEvents="none"></InputLeftElement>
-                              <input
-                                type="datetime-local"
-                                id="endTime"
+                              <Calendar
+                                id="startTime"
+                                dateFormat="dd/mm/yy"
+                                showTime
+                                hourFormat="24"
                                 onChange={formik.handleChange}
                                 value={formik.values.endTime}
                                 onBlur={formik.handleBlur}
-                                placeholder={eventEdit.endTime}
                               />
                               <FormErrorMessage>
                                 {formik.errors.endTime}
@@ -270,7 +266,7 @@ export const EditEvent = (event) => {
                                 value={formik.categoryIds}
                                 onBlur={formik.handleBlur}
                               >
-                                {eventCategories.map((category) => (
+                                {categories.map((category) => (
                                   <option key={category.id} value={category.id}>
                                     {category.name}
                                   </option>
@@ -298,7 +294,7 @@ export const EditEvent = (event) => {
                                 value={formik.createdBy}
                                 onBlur={formik.handleBlur}
                               >
-                                {eventUsers.map((user) => (
+                                {users.map((user) => (
                                   <option key={user.id} value={user.id}>
                                     {user.name}
                                   </option>

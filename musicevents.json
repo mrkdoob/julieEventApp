@@ -1,0 +1,122 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Julie Salden",
+      "image": "https://scontent-ams2-1.xx.fbcdn.net/v/t39.30808-6/342216623_3622725691288749_8381077312537766930_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=-9DLP9y5cpYAX8dZUQH&_nc_ht=scontent-ams2-1.xx&oh=00_AfDKv-RMsfTL2-B6GktlBsjtBls1XQlOxCqelGjikVvxdw&oe=644BCF94"
+    },
+    {
+      "id": 2,
+      "name": "Guest User",
+      "image": "https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
+    }
+  ],
+  "events": [
+    {
+      "title": "Wu-tang Tour",
+      "description": "Go see te GOAT's of Hip Hop",
+      "image": "https://www.narcity.com/media-library/image.jpg?id=25923154&width=1245&height=700&quality=85&coordinates=0%2C110%2C0%2C110",
+      "startTime": "2023-06-06T19:00:00.000Z",
+      "endTime": "2023-06-06T23:00:00.000Z",
+      "location": "Ziggodome",
+      "categoryIds": [
+        1
+      ],
+      "createdBy": 1,
+      "id": 1
+    },
+    {
+      "id": 3,
+      "createdBy": 2,
+      "title": "Lowlands",
+      "description": "A flight to the Lowlands paradise",
+      "image": "https://www.gigtech.nl/wp-content/uploads/2021/06/lowlands-alpha2.jpg",
+      "categoryIds": [
+        2,
+        3
+      ],
+      "attendedBy": [
+        1,
+        2
+      ],
+      "location": "Biddinghuizen",
+      "startTime": "2023-08-18T12:00:00.000Z",
+      "endTime": "2023-08-20T12:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "createdBy": 2,
+      "title": "7th Sunday",
+      "description": "The best sunday festival of the year!",
+      "image": "https://7thsunday.nl/wp-content/uploads/sites/2/2022/11/PAR-T_7TH_COLLAGE__0004_7TH2022_06_010037_Spark_5819.jpg",
+      "categoryIds": [
+        2
+      ],
+      "attendedBy": [],
+      "location": "Erp",
+      "startTime": "2023-05-28T12:00:00.000Z",
+      "endTime": "2023-05-28T23:00:00.000Z"
+    },
+    {
+      "title": "Metallica",
+      "description": "Rock out with these legends",
+      "image": "https://www.nme.com/wp-content/uploads/2020/04/Metallica-1392x884.jpg",
+      "startTime": "2023-04-27T20:00",
+      "endTime": "2023-04-27T23:00",
+      "location": "Amsterdam",
+      "categoryIds": "1",
+      "createdBy": 1,
+      "id": 12
+    },
+    {
+      "title": "PukkelPop",
+      "description": "Our favorite Belgian festival",
+      "image": "https://festileaks.com/wp-content/uploads/2018/06/presspics-pkp17-32-1920x1280.jpg",
+      "startTime": "2023-08-17T12:00",
+      "endTime": "2023-08-20T12:00",
+      "location": "Hasselt",
+      "categoryIds": [
+        2,
+        3
+      ],
+      "createdBy": 1,
+      "id": 14
+    },
+    {
+      "title": "Sticks",
+      "description": "Go see the finest dutch rapper around",
+      "image": "https://img.redbull.com/images/w_3000/q_auto,f_auto/redbullcom/2020/5/1/vo0tpplv214nopo5ayi1/sticks",
+      "startTime": "2023-05-13T20:30",
+      "endTime": "2023-05-13T23:00",
+      "location": "Amersfoort ",
+      "categoryIds": "1",
+      "createdBy": 1,
+      "id": 16
+    },
+    {
+      "title": "Rotterdam Rave",
+      "description": "Rave like only the city of Rotterdam can!",
+      "image": "https://magprod2-1a27b.kxcdn.com/wp-content/uploads/2023/02/322498042_1506276706544059_9056278565810804791_n.jpg.webp",
+      "startTime": "2023-09-02T13:00",
+      "endTime": "2023-09-02T23:00",
+      "location": "Hoek van Holland beach",
+      "categoryIds": "2",
+      "createdBy": 1,
+      "id": 17
+    }
+  ],
+  "categories": [
+    {
+      "name": "concerts",
+      "id": 1
+    },
+    {
+      "name": "festivals",
+      "id": 2
+    },
+    {
+      "name": "multipleday",
+      "id": 3
+    }
+  ]
+}

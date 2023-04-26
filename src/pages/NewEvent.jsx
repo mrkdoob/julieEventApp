@@ -1,3 +1,7 @@
+import { Link, useLoaderData, redirect } from "react-router-dom";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { MultiSelect } from "primereact/multiselect";
 import {
   WrapItem,
   Box,
@@ -14,17 +18,8 @@ import {
   Select,
   useToast,
   Center,
-  //   Link,
   Text,
 } from "@chakra-ui/react";
-
-import { redirect } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { Formik } from "formik";
-import * as Yup from "yup";
-// import { useRouteLoaderData } from "react-router-dom";
-import { useLoaderData } from "react-router-dom";
-import { MultiSelect } from "primereact/multiselect";
 
 export const loader = async () => {
   const categories = await fetch("http://localhost:3000/categories");
@@ -42,25 +37,30 @@ export const NewEvent = () => {
       method: "POST",
       body: JSON.stringify(values),
       headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((json) => json.id);
-    toast({
-      title: "Event added succesfully.",
-      status: "success",
-      duration: 5000,
-      position: "top-right",
-      isClosable: true,
+    }).then((res) => {
+      if (res.ok)
+        toast({
+          title: "Event added succesfully.",
+          status: "success",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        })
+          .then((res) => res.json())
+          .then((json) => json.id);
+      else
+        toast({
+          title: "Event not added.",
+          status: "error",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
+
+      return redirect(`/event/${newEvent}`);
     });
-    toast({
-      title: "Event not added.",
-      status: "error",
-      duration: 5000,
-      position: "top-right",
-      isClosable: true,
-    });
-    return redirect(`/event/${newEvent}`);
   };
+
   const initialValues = {
     title: "",
     description: "",
@@ -74,7 +74,7 @@ export const NewEvent = () => {
 
   const validationSchema = Yup.object({
     title: Yup.string()
-      .min(6, "Event title is too short")
+      .min(4, "Event title is too short")
       .required("Event title is required"),
     description: Yup.string()
       .min(15, "Description is too short")
