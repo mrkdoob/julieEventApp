@@ -1,7 +1,7 @@
-import { Link, useLoaderData, redirect } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { MultiSelect } from "primereact/multiselect";
+// import { MultiSelect } from "primereact/multiselect";
 import {
   WrapItem,
   Box,
@@ -21,6 +21,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+// fetchen benodigdheden
 export const loader = async () => {
   const categories = await fetch("http://localhost:3000/categories");
   const users = await fetch("http://localhost:3000/users");
@@ -30,35 +31,36 @@ export const loader = async () => {
 export const NewEvent = () => {
   const toast = useToast();
   const { users, categories } = useLoaderData();
+  const navigate = useNavigate();
 
+  // event toevoegen en naar de pagina van dit event sturen
   const addEvent = async ({ values }) => {
     values.createdBy = parseInt(values.createdBy);
-    const newEvent = await fetch("http://localhost:3000/events", {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: { "Content-Type": "application/json" },
-    }).then((res) => {
-      if (res.ok)
-        toast({
-          title: "Event added succesfully.",
-          status: "success",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        })
-          .then((res) => res.json())
-          .then((json) => json.id);
-      else
-        toast({
-          title: "Event not added.",
-          status: "error",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        });
-
-      return redirect(`/event/${newEvent}`);
-    });
+    try {
+      const newEvent = await fetch("http://localhost:3000/events", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => res.json())
+        .then((json) => json.id);
+      navigate(`/event/${newEvent}`);
+      toast({
+        title: "Event added succesfully.",
+        status: "success",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: "Event not added.",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   };
 
   const initialValues = {
@@ -84,10 +86,11 @@ export const NewEvent = () => {
     startTime: Yup.date().required("Start time is requiered"),
     endTime: Yup.date().required("End time is requiered"),
     location: Yup.string().required("Location is required"),
-    // categoryIds: Yup.number().required("Category selection is required"),
+    categoryIds: Yup.string().required("Category selection is required"),
     createdBy: Yup.number().required("User selection is required"),
   });
 
+  //submitten form en post request aanroepen
   const onSubmit = (values, actions) => {
     addEvent({ values });
     actions.resetForm();
@@ -241,19 +244,19 @@ export const NewEvent = () => {
                       <FormLabel>Category</FormLabel>
                       <InputGroup borderColor="#E0E1E7">
                         <InputLeftElement pointerEvents="none"></InputLeftElement>
-                        <MultiSelect
-                          id="category"
+                        <Select
                           name="categoryIds"
                           onChange={formik.handleChange}
-                          value={formik.values.categoryIds}
+                          value={formik.categoryIds}
                           onBlur={formik.handleBlur}
                           placeholder="Select Category"
-                          options={categories.map((category) => (
+                        >
+                          {categories.map((category) => (
                             <option key={category.id} value={category.id}>
                               {category.name}
                             </option>
                           ))}
-                        ></MultiSelect>
+                        </Select>
                         <FormErrorMessage>
                           {formik.errors.categoryIds}
                         </FormErrorMessage>

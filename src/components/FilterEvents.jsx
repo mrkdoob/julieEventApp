@@ -1,30 +1,51 @@
 import { Select } from "@chakra-ui/react";
 import { Formik } from "formik";
 
-export const FilterEvents = ({ events, categories, setEventChoice }) => {
-  // const handleCategoryChoice = (e) => {
-  //   const categoryId = e.target.value;
-  //   fetchCatergoryQuery(categoryId).then(({ event }) => {
-  //     setEventChoice(event);
-  //   });
-  // };
+//fetchen gekozen filters
+export const FilterEvents = ({ setEventChoice, events }) => {
+  const fetchByAz = async () => {
+    const sortedAzEvents = await fetch(
+      "http://localhost:3000/events?_sort=title&_order=asc"
+    );
+    return { sortedAzEvents: await sortedAzEvents.json() };
+  };
 
-  console.log(categories);
+  const fetchByDate = async () => {
+    const sortedDateEvents = await fetch(
+      "http://localhost:3000/events?_sort=startTime&_order=asc"
+    );
+    return { sortedDateEvents: await sortedDateEvents.json() };
+  };
 
-  // const eventTitles = events.map((event) => {
-  //   return event.title;
-  // });
+  const fetchByCategory = async () => {
+    const sortedCategoryEvents = await fetch(
+      "http://localhost:3000/events?_sort=categoryIds&_order=asc"
+    );
+    return { sortedCategoryEvents: await sortedCategoryEvents.json() };
+  };
 
-  console.log(events.title);
+  // aanroepen fetch van gekozen filter en state veranderen voor eventspage
+  const handleFilterChoice = (e) => {
+    if (e.target.value == "az") {
+      fetchByAz().then(({ sortedAzEvents }) => {
+        setEventChoice(sortedAzEvents);
+      });
+    }
 
-  // const handleFilterChoice = (e) => {
-  //   if (e.target.value == "az") {
-  //     const azEvents = events.title.sort();
-  //     setEventChoice(azEvents);
-  //   }
-  // };
+    if (e.target.value == "date") {
+      fetchByDate().then(({ sortedDateEvents }) => {
+        setEventChoice(sortedDateEvents);
+      });
+    }
 
-  // GET /api/articles?sort[0]=title&sort[1]=slug   :asc
+    if (e.target.value == "category") {
+      fetchByCategory().then(({ sortedCategoryEvents }) => {
+        setEventChoice(sortedCategoryEvents);
+      });
+    } else {
+      setEventChoice(events);
+    }
+  };
 
   return (
     <Formik>
@@ -32,11 +53,10 @@ export const FilterEvents = ({ events, categories, setEventChoice }) => {
         fontWeight={"450"}
         color="black"
         width={250}
-        mb={20}
         bg="white"
-        ml={5}
-        // placeholder="Filter Events"
-        // onChange={handleFilterChoice}
+        placeholder="Filter Events"
+        onChange={handleFilterChoice}
+        mb={3}
       >
         <option value="az">A-z</option>
         <option value="date">Date</option>

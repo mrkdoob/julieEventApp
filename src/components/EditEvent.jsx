@@ -1,7 +1,7 @@
 import { Formik } from "formik";
-import { redirect } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 import {
   Modal,
   ModalOverlay,
@@ -30,37 +30,43 @@ import {
 export const EditEvent = ({ event, categories, users }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const navigate = useNavigate();
 
+  //editen en terug sturen naar de edited event page
   const editEventFetch = async ({ values }, eventId) => {
     values.createdBy = parseInt(values.createdBy);
-    const editedEvent = await fetch(`http://localhost:3000/events/${eventId}`, {
-      method: "PUT",
-      body: JSON.stringify(values),
-      headers: { "Content-Type": "application/json" },
-    }).then((res) => {
-      if (res.ok)
-        toast({
-          title: "Event edited succesfully.",
-          status: "success",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        })
-          .then((res) => res.json())
-          .then((json) => json.id);
-      else
-        toast({
-          title: "Event not edited.",
-          status: "error",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        });
-
-      return redirect(`/event/${editedEvent}`);
-    });
+    try {
+      const editedEvent = await fetch(
+        `http://localhost:3000/events/${eventId}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(values),
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+        .then((res) => res.json())
+        .then((json) => json.id);
+      navigate(`/event/${editedEvent}`);
+      toast({
+        title: "Event edited.",
+        description: "Event edited and saved.",
+        status: "success",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: "Event not edited.",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   };
 
+  // aanroepen put request
   const onSubmit = (values, eventId, actions) => {
     editEventFetch({ values }, eventId);
     actions.resetForm();

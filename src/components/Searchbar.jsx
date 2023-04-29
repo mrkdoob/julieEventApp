@@ -1,5 +1,6 @@
 import { Input } from "@chakra-ui/react";
 
+// fetchen getypte event
 export const Searchbar = ({ setEventChoice }) => {
   const fetchBySearchQuery = async (eventChoice) => {
     const choosenEvent = await fetch(
@@ -10,6 +11,7 @@ export const Searchbar = ({ setEventChoice }) => {
     };
   };
 
+  // aanroepen fetch van getype event en state veranderen voor eventspage
   const handleEventChoice = (e) => {
     const eventChoice = e.target.value;
     fetchBySearchQuery(eventChoice).then(({ event }) => {
@@ -23,10 +25,9 @@ export const Searchbar = ({ setEventChoice }) => {
       fontWeight={"450"}
       color="blue.600"
       placeholder="Search for event here.."
-      width={300}
-      mb={20}
-      mr={5}
+      width={250}
       bg="white"
+      mb={3}
     ></Input>
   );
 };

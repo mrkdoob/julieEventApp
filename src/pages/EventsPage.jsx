@@ -3,9 +3,18 @@ import { useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { Searchbar } from "../components/Searchbar";
 import { Categorypicker } from "../components/Categorypicker";
-import { FilterEvents } from "../components/filterEvents";
-import { Box, Text, Button, Center, Flex } from "@chakra-ui/react";
+import { FilterEvents } from "../components/FilterEvents";
+import {
+  Box,
+  Text,
+  Button,
+  Center,
+  Flex,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
 
+// fetchen benodigdheden
 export const loader = async () => {
   const events = await fetch(`http://localhost:3000/events`);
   const categories = await fetch("http://localhost:3000/categories");
@@ -19,23 +28,25 @@ export const EventsPage = () => {
 
   return (
     <>
-      <Box bg="black">
+      <Box bg="black" h="100%" w="100%">
         <Text fontSize="7xl" color="gray.300" pl={5}>
           Upcoming Events
         </Text>
 
-        <Flex mt={10} mr={25} justifyContent="flex-end">
+        <Flex
+          direction={{ sm: "column", lg: "row" }}
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          mt={10}
+          mr={25}
+          mb={40}
+        >
           <Searchbar setEventChoice={setEventChoice} />
           <Categorypicker
-            events={events}
             categories={categories}
             setEventChoice={setEventChoice}
           />
-          <FilterEvents
-            events={events}
-            categories={categories}
-            setEventChoice={setEventChoice}
-          />
+          <FilterEvents events={events} setEventChoice={setEventChoice} />
         </Flex>
         <Center>
           <Box className="eventList">
@@ -44,47 +55,93 @@ export const EventsPage = () => {
                 {eventChoice.map((event) => {
                   return (
                     <Link key={event.id} to={`event/${event.id}`}>
-                      <Center
-                        key={event.name}
-                        backgroundImage={event.image}
-                        p={4}
-                        color="black"
-                        pt={20}
-                        pb={40}
-                        pl={40}
-                        pr={40}
-                        ml={40}
-                        mr={40}
-                        mb={10}
-                        w={{ base: "80px", md: "200px", lg: "1000px" }}
-                        borderRadius="10"
-                        borderColor="yellow.300"
-                        borderWidth={4}
-                      >
-                        <Box
-                          key={event.id}
-                          bg="yellow.300"
-                          p={2}
-                          borderRadius={10}
+                      <Center>
+                        <Grid
+                          key={event.name}
+                          backgroundImage={event.image}
+                          color="black"
+                          pt={20}
+                          pb={20}
+                          pl={40}
+                          pr={40}
+                          ml={40}
+                          mr={40}
+                          mb={20}
+                          h={{ sm: "370px", lg: "700px" }}
+                          w={{ sm: "80px", lg: "1200px" }}
+                          borderRadius="10"
+                          borderColor="yellow.300"
+                          borderWidth={4}
+                          justifyContent="space-around"
+                          alignItems="center"
                         >
-                          <Text as="b">{event.title}</Text>
-                          <Text>{event.description}</Text>
-                          <Text>
-                            Start time event:
-                            {new Date(event.startTime).toLocaleString()}
-                          </Text>
-                          <Text>
-                            End time event:
-                            {new Date(event.endTime).toLocaleString()}
-                          </Text>
-                          <Box bg="gray.200" alignItems="flex-end">
-                            {categories.map((category) =>
-                              event.categoryIds?.includes(category.id) ? (
-                                <Text key={category.id}>{category.name}</Text>
-                              ) : null
-                            )}
-                          </Box>
-                        </Box>
+                          <GridItem
+                            key={event.id}
+                            bg="yellow.300"
+                            p={2}
+                            borderRadius={10}
+                            w={{ sm: "200px", lg: "400px" }}
+                            h={{ sm: "200px", lg: "270px" }}
+                          >
+                            <Text
+                              as="b"
+                              fontSize={{
+                                base: "17px",
+
+                                lg: "35px",
+                              }}
+                            >
+                              {event.title}
+                            </Text>
+                            <Text
+                              fontSize={{
+                                base: "14px",
+
+                                lg: "25px",
+                              }}
+                            >
+                              {event.description}
+                            </Text>
+                            <Text
+                              fontSize={{
+                                base: "12px",
+
+                                lg: "20px",
+                              }}
+                            >
+                              Start time event:
+                              {new Date(event.startTime).toLocaleString()}
+                            </Text>
+                            <Text
+                              fontSize={{
+                                base: "12px",
+
+                                lg: "20px",
+                              }}
+                            >
+                              End time event:
+                              {new Date(event.endTime).toLocaleString()}
+                            </Text>
+                            <Center mt={{ sm: "1", lg: "5" }}>
+                              <Box bg="gray.200" borderRadius={5}>
+                                {categories.map((category) =>
+                                  event.categoryIds?.includes(category.id) ? (
+                                    <Text
+                                      fontSize={{
+                                        base: "12px",
+
+                                        lg: "20px",
+                                      }}
+                                      key={category.id}
+                                    >
+                                      {category.name}
+                                    </Text>
+                                  ) : null
+                                )}
+                              </Box>
+                            </Center>
+                          </GridItem>
+                        </Grid>
                       </Center>
                     </Link>
                   );

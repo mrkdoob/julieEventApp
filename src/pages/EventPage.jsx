@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData, Link, redirect } from "react-router-dom";
+import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import { EditEvent } from "../components/EditEvent";
 import background from "../images/background.jpeg";
 import {
@@ -12,6 +12,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
+// fetchen benodigdheden
 export const loader = async ({ params }) => {
   const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
   const users = await fetch("http://localhost:3000/users");
@@ -25,25 +26,37 @@ export const loader = async ({ params }) => {
 
 export const EventPage = () => {
   const { users, event, categories } = useLoaderData();
-
+  const navigate = useNavigate();
   const toast = useToast();
 
+  // deleten en terug sturen naar eventspagina
   const deleteEvent = async (eventId) => {
-    await fetch(`http://localhost:3000/events/${eventId}`, {
-      method: "DELETE",
-    });
-    return redirect(`/`);
+    try {
+      await fetch(`http://localhost:3000/events/${eventId}`, {
+        method: "DELETE",
+      });
+      navigate(`/`);
+      toast({
+        title: "Event deleted.",
+        status: "success",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: "Event not deleted.",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   };
 
+  // aanroepen delete request
   const handleDeleteEvent = (eventId) => {
     deleteEvent(eventId);
-    toast({
-      title: "Event deleted succesfully.",
-      status: "success",
-      duration: 5000,
-      position: "top-right",
-      isClosable: true,
-    });
   };
 
   return (
@@ -56,7 +69,7 @@ export const EventPage = () => {
             backgroundRepeat="no-repeat"
             borderWidth="3px"
             borderColor="yellow.300"
-            w={600}
+            w={{ sm: "400px", lg: "600px" }}
           >
             <Flex flexDirection="column" alignItems="center" pl={5} pr={5}>
               <Text fontSize="5xl">{event.title}</Text>
@@ -74,13 +87,13 @@ export const EventPage = () => {
               <Box mt={10} pl={5}>
                 <Text as="b">Start time event:</Text>
                 <Text> {new Date(event.startTime).toLocaleString()}</Text>
-                <Text as="b">End time event:</Text>{" "}
+                <Text as="b">End time event:</Text>
                 <Text> {new Date(event.endTime).toLocaleString()}</Text>
                 <Text as="b">Location:</Text>
                 <Text> {event.location}</Text>
               </Box>
             </Box>
-            <Box w={580}>
+            <Box w={{ sm: "360px", lg: "580px" }}>
               <Flex direction="column" alignItems="flex-end">
                 <Text as="b" mr={2}>
                   Created by
@@ -93,7 +106,7 @@ export const EventPage = () => {
                         h={75}
                         w={75}
                         borderRadius="50%"
-                      ></Image>{" "}
+                      ></Image>
                       <Text mb={1}>{user.name}</Text>
                     </Box>
                   ) : null
@@ -103,22 +116,6 @@ export const EventPage = () => {
           </Box>
         </Center>
         <Center mt={20}>
-          {/* {isOpen && (
-  <Dialog>
-    Are you sure?
-    <button onClick={closeConfirmationModal}>No</button>
-    <button onClick={handleDeleteEvent(event.id)}>Yes</button>
-  </Dialog>
-)}
-          <Button
-            bg="yellow.300"
-            color="black"
-            mr={20}
-            onClick={() => {openConfirmationModal}}
-          >
-            Delete this event
-          </Button> */}
-
           <Button
             bg="yellow.300"
             color="black"
@@ -136,7 +133,6 @@ export const EventPage = () => {
             Delete this event
           </Button>
 
-          {/* handleDeleteEvent(event.id) */}
           <EditEvent
             event={event}
             users={users}
