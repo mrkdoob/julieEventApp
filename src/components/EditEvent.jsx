@@ -66,7 +66,7 @@ export const EditEvent = ({ event, categories, users }) => {
     }
   };
 
-  // aanroepen put request
+  // aanroepen put request en form leegmaken
   const onSubmit = (values, eventId, actions) => {
     editEventFetch({ values }, eventId);
     actions.resetForm();

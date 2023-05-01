@@ -25,21 +25,24 @@ export const loader = async () => {
 export const EventsPage = () => {
   const { events, categories } = useLoaderData();
   const [eventChoice, setEventChoice] = useState(events);
+  const [isOpen, setIsOpen] = useState(true);
 
   // fetchen van alle evenementen (er van uitgaande niet meer dan 200)
   const moreEventsLoader = async () => {
     const moreEvents = await fetch(
       `http://localhost:3000/events?_page=1&_limit=200`
     );
-    return { moreEvents: await moreEvents.json() }.then(({ moreEvents }) => {
-      setEventChoice(moreEvents);
-      console.log("hello");
-    });
+    const allEvents = await moreEvents.json();
+    setEventChoice(allEvents);
   };
 
+  // aanroepen fetch funtie van alle evenementen
   const handleMoreEventsLoader = () => moreEventsLoader();
-  console.log("hello2");
 
+  // onzichtbaar maken van de show more button wanneer alle evenementen gedisplayed zijn
+  function toggle() {
+    setIsOpen((isOpen) => !isOpen);
+  }
   return (
     <>
       <Box bg="black" h="100%" w="100%">
@@ -165,16 +168,20 @@ export const EventsPage = () => {
           </Box>
         </Center>
         <Center>
-          <Button
-            bg="yellow.300"
-            color="black"
-            mt={25}
-            onClick={() => {
-              handleMoreEventsLoader();
-            }}
-          >
-            <Text as="em">Show more events..</Text>
-          </Button>
+          <Box className="showMore">
+            {isOpen && (
+              <Button
+                bg="yellow.300"
+                color="black"
+                mt={25}
+                onClick={() => {
+                  handleMoreEventsLoader(), toggle();
+                }}
+              >
+                <Text as="em">Show more events..</Text>
+              </Button>
+            )}
+          </Box>
         </Center>
         <Center>
           <Button bg="yellow.300" color="black" mt={100}>
