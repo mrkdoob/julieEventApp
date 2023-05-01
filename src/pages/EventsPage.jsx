@@ -16,7 +16,7 @@ import {
 
 // fetchen benodigdheden
 export const loader = async () => {
-  const events = await fetch(`http://localhost:3000/events`);
+  const events = await fetch(`http://localhost:3000/events?_page=1&_limit=5`);
   const categories = await fetch("http://localhost:3000/categories");
 
   return { events: await events.json(), categories: await categories.json() };
@@ -25,6 +25,20 @@ export const loader = async () => {
 export const EventsPage = () => {
   const { events, categories } = useLoaderData();
   const [eventChoice, setEventChoice] = useState(events);
+
+  // fetchen van alle evenementen (er van uitgaande niet meer dan 200)
+  const moreEventsLoader = async () => {
+    const moreEvents = await fetch(
+      `http://localhost:3000/events?_page=1&_limit=200`
+    );
+    return { moreEvents: await moreEvents.json() }.then(({ moreEvents }) => {
+      setEventChoice(moreEvents);
+      console.log("hello");
+    });
+  };
+
+  const handleMoreEventsLoader = () => moreEventsLoader();
+  console.log("hello2");
 
   return (
     <>
@@ -151,7 +165,19 @@ export const EventsPage = () => {
           </Box>
         </Center>
         <Center>
-          <Button bg="yellow.300" color="black" mt={55}>
+          <Button
+            bg="yellow.300"
+            color="black"
+            mt={25}
+            onClick={() => {
+              handleMoreEventsLoader();
+            }}
+          >
+            <Text as="em">Show more events..</Text>
+          </Button>
+        </Center>
+        <Center>
+          <Button bg="yellow.300" color="black" mt={100}>
             <Link to={"event/new"}>Add event</Link>
           </Button>
         </Center>
