@@ -1,6 +1,6 @@
 import React from "react";
-import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import { EditEvent } from "../components/EditEvent";
+import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import background from "../images/background.jpeg";
 import {
   Box,

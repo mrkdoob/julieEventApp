@@ -28,9 +28,9 @@ export const loader = async () => {
 };
 
 export const NewEvent = () => {
-  const toast = useToast();
   const { users, categories } = useLoaderData();
   const navigate = useNavigate();
+  const toast = useToast();
 
   // event toevoegen en naar de pagina van dit event sturen
   const addEvent = async ({ values }) => {
