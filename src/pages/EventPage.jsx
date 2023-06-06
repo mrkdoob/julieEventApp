@@ -1,7 +1,7 @@
-import React from "react";
-import { EditEvent } from "../components/EditEvent";
-import { useLoaderData, Link, useNavigate } from "react-router-dom";
-import background from "../images/background.jpeg";
+import React from 'react';
+import { EditEvent } from '../components/EditEvent';
+import { useLoaderData, Link, useNavigate } from 'react-router-dom';
+import background from '../images/background.jpeg';
 import {
   Box,
   Text,
@@ -10,13 +10,17 @@ import {
   useToast,
   Center,
   Flex,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 // fetchen benodigdheden
 export const loader = async ({ params }) => {
-  const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
-  const users = await fetch("http://localhost:3000/users");
-  const categories = await fetch("http://localhost:3000/categories");
+  const event = await fetch(
+    `https://my-musicevents.herokuapp.com/events/${params.eventId}`,
+  );
+  const users = await fetch('https://my-musicevents.herokuapp.com/users');
+  const categories = await fetch(
+    'https://my-musicevents.herokuapp.com/categories',
+  );
   return {
     event: await event.json(),
     users: await users.json(),
@@ -32,23 +36,23 @@ export const EventPage = () => {
   // deleten en terug sturen naar eventspagina
   const deleteEvent = async (eventId) => {
     try {
-      await fetch(`http://localhost:3000/events/${eventId}`, {
-        method: "DELETE",
+      await fetch(`https://my-musicevents.herokuapp.com/events/${eventId}`, {
+        method: 'DELETE',
       });
       navigate(`/`);
       toast({
-        title: "Event deleted.",
-        status: "success",
+        title: 'Event deleted.',
+        status: 'success',
         duration: 5000,
-        position: "top-right",
+        position: 'top-right',
         isClosable: true,
       });
     } catch (err) {
       toast({
-        title: "Event not deleted.",
-        status: "error",
+        title: 'Event not deleted.',
+        status: 'error',
         duration: 5000,
-        position: "top-right",
+        position: 'top-right',
         isClosable: true,
       });
     }
@@ -69,7 +73,7 @@ export const EventPage = () => {
             backgroundRepeat="no-repeat"
             borderWidth="3px"
             borderColor="yellow.300"
-            w={{ sm: "400px", lg: "600px" }}
+            w={{ sm: '400px', lg: '600px' }}
           >
             <Flex flexDirection="column" alignItems="center" pl={5} pr={5}>
               <Text fontSize="5xl">{event.title}</Text>
@@ -93,7 +97,7 @@ export const EventPage = () => {
                 <Text> {event.location}</Text>
               </Box>
             </Box>
-            <Box w={{ sm: "360px", lg: "580px" }}>
+            <Box w={{ sm: '360px', lg: '580px' }}>
               <Flex direction="column" alignItems="flex-end">
                 <Text as="b" mr={2}>
                   Created by
@@ -109,7 +113,7 @@ export const EventPage = () => {
                       ></Image>
                       <Text mb={1}>{user.name}</Text>
                     </Box>
-                  ) : null
+                  ) : null,
                 )}
               </Flex>
             </Box>
@@ -123,7 +127,7 @@ export const EventPage = () => {
             className="delete button"
             onClick={() => {
               const confirmBox = window.confirm(
-                "Do you really want to delete this Event?"
+                'Do you really want to delete this Event?',
               );
               if (confirmBox === true) {
                 handleDeleteEvent(event.id);

@@ -1,10 +1,10 @@
-import { Input } from "@chakra-ui/react";
+import { Input } from '@chakra-ui/react';
 
 // fetchen getypte event
 export const Searchbar = ({ setEventChoice }) => {
   const fetchBySearchQuery = async (eventChoice) => {
     const choosenEvent = await fetch(
-      `http://localhost:3000/events?q=${eventChoice}`
+      `https://my-musicevents.herokuapp.com/events?q=${eventChoice}`,
     );
     return {
       event: await choosenEvent.json(),
@@ -22,7 +22,7 @@ export const Searchbar = ({ setEventChoice }) => {
   return (
     <Input
       onChange={handleEventChoice}
-      fontWeight={"450"}
+      fontWeight={'450'}
       color="blue.600"
       placeholder="Search for event here.."
       width={250}

@@ -1,9 +1,9 @@
-import React from "react";
-import { useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
-import { Searchbar } from "../components/Searchbar";
-import { Categorypicker } from "../components/Categorypicker";
-import { FilterEvents } from "../components/FilterEvents";
+import React from 'react';
+import { useState } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
+import { Searchbar } from '../components/Searchbar';
+import { Categorypicker } from '../components/Categorypicker';
+import { FilterEvents } from '../components/FilterEvents';
 import {
   Box,
   Text,
@@ -12,12 +12,16 @@ import {
   Flex,
   Grid,
   GridItem,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 // fetchen benodigdheden
 export const loader = async () => {
-  const events = await fetch(`http://localhost:3000/events?_page=1&_limit=5`);
-  const categories = await fetch("http://localhost:3000/categories");
+  const events = await fetch(
+    `https://my-musicevents.herokuapp.com/events?_page=1&_limit=5`,
+  );
+  const categories = await fetch(
+    'https://my-musicevents.herokuapp.com/categories',
+  );
 
   return { events: await events.json(), categories: await categories.json() };
 };
@@ -30,7 +34,7 @@ export const EventsPage = () => {
   // fetchen van alle evenementen (er van uitgaande niet meer dan 200)
   const moreEventsLoader = async () => {
     const moreEvents = await fetch(
-      `http://localhost:3000/events?_page=1&_limit=200`
+      `https://my-musicevents.herokuapp.com/events?_page=1&_limit=200`,
     );
     const allEvents = await moreEvents.json();
     setEventChoice(allEvents);
@@ -51,7 +55,7 @@ export const EventsPage = () => {
         </Text>
 
         <Flex
-          direction={{ sm: "column", lg: "row" }}
+          direction={{ sm: 'column', lg: 'row' }}
           justifyContent="flex-end"
           alignItems="flex-end"
           mt={10}
@@ -84,8 +88,8 @@ export const EventsPage = () => {
                           ml={40}
                           mr={40}
                           mb={20}
-                          h={{ sm: "370px", lg: "700px" }}
-                          w={{ sm: "80px", lg: "1200px" }}
+                          h={{ sm: '370px', lg: '700px' }}
+                          w={{ sm: '80px', lg: '1200px' }}
                           borderRadius="10"
                           borderColor="yellow.300"
                           borderWidth={4}
@@ -97,33 +101,33 @@ export const EventsPage = () => {
                             bg="yellow.300"
                             p={2}
                             borderRadius={10}
-                            w={{ sm: "200px", lg: "400px" }}
-                            h={{ sm: "200px", lg: "270px" }}
+                            w={{ sm: '200px', lg: '400px' }}
+                            h={{ sm: '200px', lg: '270px' }}
                           >
                             <Text
                               as="b"
                               fontSize={{
-                                base: "17px",
+                                base: '17px',
 
-                                lg: "35px",
+                                lg: '35px',
                               }}
                             >
                               {event.title}
                             </Text>
                             <Text
                               fontSize={{
-                                base: "14px",
+                                base: '14px',
 
-                                lg: "25px",
+                                lg: '25px',
                               }}
                             >
                               {event.description}
                             </Text>
                             <Text
                               fontSize={{
-                                base: "12px",
+                                base: '12px',
 
-                                lg: "20px",
+                                lg: '20px',
                               }}
                             >
                               Start time event:
@@ -131,29 +135,29 @@ export const EventsPage = () => {
                             </Text>
                             <Text
                               fontSize={{
-                                base: "12px",
+                                base: '12px',
 
-                                lg: "20px",
+                                lg: '20px',
                               }}
                             >
                               End time event:
                               {new Date(event.endTime).toLocaleString()}
                             </Text>
-                            <Center mt={{ sm: "1", lg: "5" }}>
+                            <Center mt={{ sm: '1', lg: '5' }}>
                               <Box bg="gray.200" borderRadius={5}>
                                 {categories.map((category) =>
                                   event.categoryIds?.includes(category.id) ? (
                                     <Text
                                       fontSize={{
-                                        base: "12px",
+                                        base: '12px',
 
-                                        lg: "20px",
+                                        lg: '20px',
                                       }}
                                       key={category.id}
                                     >
                                       {category.name}
                                     </Text>
-                                  ) : null
+                                  ) : null,
                                 )}
                               </Box>
                             </Center>
@@ -185,7 +189,7 @@ export const EventsPage = () => {
         </Center>
         <Center>
           <Button bg="yellow.300" color="black" mt={100}>
-            <Link to={"event/new"}>Add event</Link>
+            <Link to={'event/new'}>Add event</Link>
           </Button>
         </Center>
       </Box>

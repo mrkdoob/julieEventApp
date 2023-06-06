@@ -1,7 +1,7 @@
-import { Formik } from "formik";
-import { Calendar } from "primereact/calendar";
-import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Formik } from 'formik';
+import { Calendar } from 'primereact/calendar';
+import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import {
   Modal,
   ModalOverlay,
@@ -25,7 +25,7 @@ import {
   Heading,
   useDisclosure,
   useToast,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 export const EditEvent = ({ event, categories, users }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,30 +37,30 @@ export const EditEvent = ({ event, categories, users }) => {
     values.createdBy = parseInt(values.createdBy);
     try {
       const editedEvent = await fetch(
-        `http://localhost:3000/events/${eventId}`,
+        `https://my-musicevents.herokuapp.com/events/${eventId}`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify(values),
-          headers: { "Content-Type": "application/json" },
-        }
+          headers: { 'Content-Type': 'application/json' },
+        },
       )
         .then((res) => res.json())
         .then((json) => json.id);
       navigate(`/event/${editedEvent}`);
       toast({
-        title: "Event edited.",
-        description: "Event edited and saved.",
-        status: "success",
+        title: 'Event edited.',
+        description: 'Event edited and saved.',
+        status: 'success',
         duration: 5000,
-        position: "top-right",
+        position: 'top-right',
         isClosable: true,
       });
     } catch (err) {
       toast({
-        title: "Event not edited.",
-        status: "error",
+        title: 'Event not edited.',
+        status: 'error',
         duration: 5000,
-        position: "top-right",
+        position: 'top-right',
         isClosable: true,
       });
     }
@@ -85,16 +85,16 @@ export const EditEvent = ({ event, categories, users }) => {
 
   const validationSchema = Yup.object({
     title: Yup.string()
-      .min(4, "Event title is too short")
-      .required("Event title is required"),
+      .min(4, 'Event title is too short')
+      .required('Event title is required'),
     description: Yup.string()
-      .min(15, "Description is too short")
-      .max(100, "Description is too long")
-      .required("Description is required"),
-    image: Yup.string().required("Image is required"),
-    startTime: Yup.date().required("Start time is requiered"),
-    endTime: Yup.date().required("End time is requiered"),
-    location: Yup.string().required("Location is required"),
+      .min(15, 'Description is too short')
+      .max(100, 'Description is too long')
+      .required('Description is required'),
+    image: Yup.string().required('Image is required'),
+    startTime: Yup.date().required('Start time is requiered'),
+    endTime: Yup.date().required('End time is requiered'),
+    location: Yup.string().required('Location is required'),
   });
 
   return (
@@ -125,7 +125,7 @@ export const EditEvent = ({ event, categories, users }) => {
                           spacing={5}
                           as="form"
                           mx="auto"
-                          w={{ base: "90%", md: "500" }}
+                          w={{ base: '90%', md: '500' }}
                           h="100vh"
                           onSubmit={formik.handleSubmit}
                         >
@@ -160,7 +160,7 @@ export const EditEvent = ({ event, categories, users }) => {
                             <Textarea
                               borderColor="gray.300"
                               _hover={{
-                                borderRadius: "gray.300",
+                                borderRadius: 'gray.300',
                               }}
                               onChange={formik.handleChange}
                               value={formik.values.description}

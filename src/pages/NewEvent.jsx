@@ -1,6 +1,6 @@
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
   WrapItem,
   Box,
@@ -18,12 +18,14 @@ import {
   useToast,
   Center,
   Text,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 // fetchen benodigdheden
 export const loader = async () => {
-  const categories = await fetch("http://localhost:3000/categories");
-  const users = await fetch("http://localhost:3000/users");
+  const categories = await fetch(
+    'https://my-musicevents.herokuapp.com/categories',
+  );
+  const users = await fetch('https://my-musicevents.herokuapp.com/users');
   return { categories: await categories.json(), users: await users.json() };
 };
 
@@ -36,57 +38,60 @@ export const NewEvent = () => {
   const addEvent = async ({ values }) => {
     values.createdBy = parseInt(values.createdBy);
     try {
-      const newEvent = await fetch("http://localhost:3000/events", {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: { "Content-Type": "application/json" },
-      })
+      const newEvent = await fetch(
+        'https://my-musicevents.herokuapp.com/events',
+        {
+          method: 'POST',
+          body: JSON.stringify(values),
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
         .then((res) => res.json())
         .then((json) => json.id);
       navigate(`/event/${newEvent}`);
       toast({
-        title: "Event added succesfully.",
-        status: "success",
+        title: 'Event added succesfully.',
+        status: 'success',
         duration: 5000,
-        position: "top-right",
+        position: 'top-right',
         isClosable: true,
       });
     } catch (err) {
       toast({
-        title: "Event not added.",
-        status: "error",
+        title: 'Event not added.',
+        status: 'error',
         duration: 5000,
-        position: "top-right",
+        position: 'top-right',
         isClosable: true,
       });
     }
   };
 
   const initialValues = {
-    title: "",
-    description: "",
-    image: "",
+    title: '',
+    description: '',
+    image: '',
     startTime: new Date(),
     endTime: new Date(),
-    location: "",
+    location: '',
     categoryIds: [],
     createdBy: 0,
   };
 
   const validationSchema = Yup.object({
     title: Yup.string()
-      .min(4, "Event title is too short")
-      .required("Event title is required"),
+      .min(4, 'Event title is too short')
+      .required('Event title is required'),
     description: Yup.string()
-      .min(15, "Description is too short")
-      .max(100, "Description is too long")
-      .required("Description is required"),
-    image: Yup.string().required("Image is required"),
-    startTime: Yup.date().required("Start time is requiered"),
-    endTime: Yup.date().required("End time is requiered"),
-    location: Yup.string().required("Location is required"),
-    categoryIds: Yup.string().required("Category selection is required"),
-    createdBy: Yup.number().required("User selection is required"),
+      .min(15, 'Description is too short')
+      .max(100, 'Description is too long')
+      .required('Description is required'),
+    image: Yup.string().required('Image is required'),
+    startTime: Yup.date().required('Start time is requiered'),
+    endTime: Yup.date().required('End time is requiered'),
+    location: Yup.string().required('Location is required'),
+    categoryIds: Yup.string().required('Category selection is required'),
+    createdBy: Yup.number().required('User selection is required'),
   });
 
   //submitten form en post request aanroepen
@@ -106,13 +111,13 @@ export const NewEvent = () => {
           return (
             <Box bg="black" w="100%">
               <Box m={8} color="yellow.300">
-                {" "}
+                {' '}
                 <WrapItem>
                   <VStack
                     spacing={5}
                     as="form"
                     mx="auto"
-                    w={{ base: "90%", md: "500" }}
+                    w={{ base: '90%', md: '500' }}
                     h="100vh"
                     onSubmit={formik.handleSubmit}
                   >
@@ -144,7 +149,7 @@ export const NewEvent = () => {
                       <Textarea
                         borderColor="gray.300"
                         _hover={{
-                          borderRadius: "gray.300",
+                          borderRadius: 'gray.300',
                         }}
                         placeholder="What's your event about?..."
                         onChange={formik.handleChange}
@@ -299,7 +304,7 @@ export const NewEvent = () => {
                           type="submit"
                         >
                           Add Event
-                        </Button>{" "}
+                        </Button>{' '}
                       </Center>
                       <Center>
                         <Link to="/">

@@ -1,11 +1,11 @@
-import { Select } from "@chakra-ui/react";
-import { Formik } from "formik";
+import { Select } from '@chakra-ui/react';
+import { Formik } from 'formik';
 
 // fetchen gekozen categorie
 export const Categorypicker = ({ setEventChoice, categories }) => {
   const fetchCatergoryQuery = async (categoryId) => {
     const categoryEvents = await fetch(
-      `http://localhost:3000/events?&categoryIds_like=${categoryId}`
+      `https://my-musicevents.herokuapp.com/events?&categoryIds_like=${categoryId}`,
     );
     return {
       event: await categoryEvents.json(),
@@ -23,7 +23,7 @@ export const Categorypicker = ({ setEventChoice, categories }) => {
   return (
     <Formik>
       <Select
-        fontWeight={"450"}
+        fontWeight={'450'}
         color="black"
         width={250}
         bg="white"
